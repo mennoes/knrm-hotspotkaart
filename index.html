@@ -954,7 +954,6 @@
         position: relative;
         z-index: 1;
         border-radius: 0;
-        overflow: hidden;
         background: rgba(255, 255, 255, 0.96);
         border: 1px solid rgba(0, 59, 97, 0.12);
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
@@ -1266,7 +1265,6 @@
         backdrop-filter: blur(4px);
         border-radius: 0;
         padding: 10px;
-        overflow: hidden;
       }
 
       .panel::before {
@@ -1431,16 +1429,12 @@
           transform: translateX(-50%);
           width: min(360px, calc(100% - 32px));
           height: auto;
-          max-height: 50svh;
-          padding: 10px 10px calc(env(safe-area-inset-bottom, 0px) + 10px);
+          max-height: 62svh;
+          padding: 0;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+          touch-action: pan-y;
           z-index: 40;
-          transition: max-height 0.3s ease, bottom 0.3s ease;
-        }
-        .panel.is-expanded {
-          max-height: 78svh;
-          bottom: 0;
         }
 
         .modal-title,
@@ -1458,6 +1452,17 @@
         .hint {
           font-size: 13px;
         }
+
+        /* Compact hotspot panel op mobiel */
+        .lines { display: none; }
+        .meta {
+          margin-top: 0;
+          padding-top: 8px;
+          border-top: none;
+        }
+        .meta-row { margin-bottom: 6px; }
+        .meta-label { font-size: 11px; margin-bottom: 1px; }
+        .meta-value { font-size: 13px; line-height: 1.4; }
 
         .modal-card {
           top: 50%;
@@ -2421,7 +2426,7 @@
         const titleOverlay = document.querySelector(".map-title-overlay");
         if (titleOverlay) titleOverlay.classList.remove("is-open");
         const panelEl = document.getElementById("sidePanel");
-        if (panelEl) { panelEl.scrollTop = 0; panelEl.classList.remove("is-expanded"); }
+        if (panelEl) { panelEl.scrollTop = 0; }
         if (els.filterModal) {
           els.filterModal.classList.remove("is-open");
           els.filterModal.setAttribute("aria-hidden", "true");
@@ -2571,17 +2576,12 @@
         els.alarmClose.addEventListener("click", closeAlarm);
         els.closeDetails.addEventListener("click", clearSelection);
 
+
         const cardEl = document.getElementById("detailsCard");
         if (cardEl) {
           cardEl.addEventListener("scroll", queueOverlayUpdate, { passive: true });
         }
 
-        const panelEl = document.getElementById("sidePanel");
-        if (panelEl) {
-          panelEl.addEventListener("scroll", () => {
-            panelEl.classList.toggle("is-expanded", panelEl.scrollTop > 20);
-          }, { passive: true });
-        }
 
         map.on("mousemove", e => {
           map.getCanvas().style.cursor = getHitFeature(e.point) ? "pointer" : "";
