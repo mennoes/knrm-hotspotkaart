@@ -726,7 +726,7 @@
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: min(520px, calc(100% - 36px));
+        width: min(400px, calc(100% - 32px));
         border-radius: 0;
         overflow: hidden;
         background: rgba(255, 255, 255, 0.96);
@@ -747,7 +747,25 @@
         padding: 12px 14px;
         background: var(--knrm-orange);
         color: white;
+        position: relative;
       }
+      .modal-top::before,
+      .card-top::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.07) 0px,
+          rgba(255, 255, 255, 0.07) 1px,
+          transparent 1px,
+          transparent 12px
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+      .modal-top > *,
+      .card-top > * { position: relative; z-index: 1; }
 
       .modal-title,
       .card-title {
@@ -783,6 +801,7 @@
         padding: 14px;
       }
 
+      .modal-body::before,
       .card-body::before {
         content: "";
         position: absolute;
@@ -798,6 +817,7 @@
         z-index: 0;
       }
 
+      .modal-body > *,
       .card-body > * {
         position: relative;
         z-index: 1;
@@ -1596,14 +1616,6 @@
               </div>
               <svg class="agenda-next-arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
             </a>
-            <div class="agenda-event">
-              <div class="agenda-event-info">
-                <div class="agenda-event-date">za 18 apr 2026</div>
-                <div class="agenda-event-name">Open dag KNRM Scheveningen</div>
-                <div class="agenda-event-sub">13:00–17:00 · Scheveningen</div>
-              </div>
-              <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Meer info</a>
-            </div>
             <div class="agenda-event">
               <div class="agenda-event-info">
                 <div class="agenda-event-date">zo 3 mei 2026</div>
