@@ -525,7 +525,7 @@
         color: white;
         text-decoration: none;
         padding: 13px 16px;
-        margin: -14px -16px 16px;
+        flex-shrink: 0;
       }
       .agenda-next:hover { filter: brightness(1.08); }
       .agenda-next-info { flex: 1; min-width: 0; }
@@ -1624,15 +1624,15 @@
             <div class="overlay-title">Agenda</div>
             <button class="modal-close" id="agendaClose" type="button" aria-label="Sluiten">×</button>
           </div>
+          <a class="agenda-next" href="https://www.knrm.nl" target="_blank" rel="noreferrer">
+            <div class="agenda-next-info">
+              <div class="agenda-next-label">Eerstvolgende event</div>
+              <div class="agenda-next-name">Open dag KNRM Scheveningen</div>
+              <div class="agenda-next-date">za 18 apr 2026 · 13:00–17:00 · Scheveningen</div>
+            </div>
+            <svg class="agenda-next-arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+          </a>
           <div class="overlay-body">
-            <a class="agenda-next" href="https://www.knrm.nl" target="_blank" rel="noreferrer">
-              <div class="agenda-next-info">
-                <div class="agenda-next-label">Eerstvolgende event</div>
-                <div class="agenda-next-name">Open dag KNRM Scheveningen</div>
-                <div class="agenda-next-date">za 18 apr 2026 · 13:00–17:00 · Scheveningen</div>
-              </div>
-              <svg class="agenda-next-arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
-            </a>
             <div class="agenda-event">
               <div class="agenda-event-info">
                 <div class="agenda-event-date">zo 3 mei 2026</div>
@@ -2333,7 +2333,6 @@
       function closePanel() { document.body.classList.remove("panel-open"); }
 
       function clearVideoUI() {
-        els.hsVideo.src = "";
         els.videoFrameWrap.style.display = "none";
         try { els.hsVideoFile.pause(); } catch {}
         els.hsVideoFile.removeAttribute("src");
@@ -2392,7 +2391,7 @@
         const embed = toYouTubeEmbed(v);
         if (!embed) return;
         els.videoEmpty.style.display = "none";
-        els.hsVideo.src = embed;
+        if (els.hsVideo.src !== embed) els.hsVideo.src = embed;
         els.videoFrameWrap.style.display = "block";
       }
 
