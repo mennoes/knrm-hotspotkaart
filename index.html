@@ -193,7 +193,7 @@
       .map-controls {
         position: absolute;
         top: 18px;
-        right: 18px;
+        right: clamp(18px, calc(18px + (100vw - 1280px) / 7), 180px);
         z-index: 12;
         display: flex;
         gap: 10px;
@@ -468,55 +468,80 @@
         color: rgba(0,58,93,0.5);
         padding: 8px 0;
       }
+      /* Agenda event cards – KNRM website style */
+      #agendaModal .overlay-body { padding: 0; }
       .agenda-event {
-        padding: 11px 0;
-        border-bottom: 1px solid rgba(0, 58, 93, 0.09);
+        border-bottom: 1px solid rgba(0,58,93,0.09);
       }
       .agenda-event:last-child { border-bottom: none; }
       body[data-theme="dark"] .agenda-event { border-bottom-color: rgba(255,255,255,0.07); }
-      .agenda-event {
+      .agenda-event-img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        background-color: var(--knrm-blue);
+        background-image: repeating-linear-gradient(135deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 12px);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        position: relative;
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: center;
       }
-      .agenda-event-info { flex: 1; }
+      .agenda-event-img img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+      .agenda-event-img-icon {
+        opacity: 0.14;
+        pointer-events: none;
+      }
+      .agenda-event-body {
+        padding: 13px 16px 16px;
+      }
       .agenda-event-date {
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.6px;
+        letter-spacing: 0.8px;
         text-transform: uppercase;
         color: var(--knrm-orange);
-        margin-bottom: 4px;
+        margin-bottom: 5px;
       }
       .agenda-event-name {
-        font-size: 16px;
-        font-weight: 700;
+        font-family: "Veneer", Impact, system-ui, sans-serif;
+        font-size: 21px;
+        letter-spacing: 0.5px;
         color: var(--knrm-blue);
-        margin-bottom: 3px;
+        line-height: 1.15;
+        margin-bottom: 4px;
       }
       body[data-theme="dark"] .agenda-event-name { color: #e9eef7; }
       .agenda-event-sub {
         font-size: 13px;
         color: rgba(0,58,93,0.55);
+        margin-bottom: 13px;
       }
       body[data-theme="dark"] .agenda-event-sub { color: rgba(200,216,232,0.65); }
       .agenda-event-link {
-        flex-shrink: 0;
+        display: inline-block;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.3px;
-        color: var(--knrm-blue);
-        background: rgba(0,58,93,0.08);
-        padding: 6px 10px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: white;
+        background: var(--knrm-blue);
+        padding: 7px 13px;
         text-decoration: none;
-        white-space: nowrap;
+        transition: background 0.15s;
       }
-      .agenda-event-link:hover { background: rgba(0,58,93,0.14); }
-      body[data-theme="dark"] .agenda-event-link {
-        color: #c8d8e8;
-        background: rgba(255,255,255,0.08);
-      }
-      body[data-theme="dark"] .agenda-event-link:hover { background: rgba(255,255,255,0.14); }
+      .agenda-event-link:hover { background: var(--knrm-orange); }
+      body[data-theme="dark"] .agenda-event-link { background: rgba(255,255,255,0.12); color: #e9eef7; }
+      body[data-theme="dark"] .agenda-event-link:hover { background: var(--knrm-orange); color: white; }
       .agenda-next {
         display: flex;
         align-items: center;
@@ -692,6 +717,71 @@
         color: rgba(200,216,232,0.7);
       }
       body[data-theme="dark"] .filter-reset:hover { background: rgba(255,255,255,0.05); }
+
+      /* App download modal */
+      .app-body { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+      .app-tagline {
+        font-size: 13px; line-height: 1.6; margin: 0 0 2px;
+        color: rgba(0,59,97,0.7); text-align: left;
+      }
+      .app-tagline strong { font-weight: 700; color: var(--knrm-blue); }
+      body[data-theme="dark"] .app-tagline { color: rgba(200,216,232,0.75); }
+      body[data-theme="dark"] .app-tagline strong { color: rgba(200,216,232,1); }
+      /* Primary CTA — full width orange */
+      .app-download-banner {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        background: var(--knrm-orange); color: #fff;
+        font-size: 13px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+        padding: 12px 16px; border-radius: 6px; border: none; cursor: pointer;
+        text-decoration: none; position: relative; overflow: hidden;
+      }
+      .app-download-banner::before {
+        content: ''; position: absolute; inset: 0;
+        background: repeating-linear-gradient(135deg, rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 1px, transparent 1px, transparent 12px);
+      }
+      .app-download-banner:hover { opacity: .9; }
+      /* Secondary — store buttons, equal width side by side */
+      .app-stores { display: flex; gap: 8px; }
+      .app-store-btn {
+        flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+        background: var(--knrm-blue); color: #fff;
+        border: none; border-radius: 6px; padding: 10px 8px;
+        font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+        text-decoration: none; transition: opacity .15s;
+      }
+      .app-store-btn:hover { opacity: .85; }
+      /* Divider */
+      .app-qr-divider {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
+        color: rgba(0,59,97,0.35); margin: 2px 0;
+      }
+      .app-qr-divider::before, .app-qr-divider::after {
+        content: ''; flex: 1; height: 1px; background: rgba(0,59,97,0.1);
+      }
+      body[data-theme="dark"] .app-qr-divider { color: rgba(200,216,232,0.3); }
+      body[data-theme="dark"] .app-qr-divider::before,
+      body[data-theme="dark"] .app-qr-divider::after { background: rgba(255,255,255,0.08); }
+      /* Tertiary — QR code centered */
+      .app-qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+      .app-qr { display: block; border: 3px solid var(--knrm-blue); border-radius: 8px; background: #fff; }
+      .app-qr-hint {
+        font-size: 11px; letter-spacing: .05em; text-transform: uppercase;
+        color: rgba(0,59,97,0.45); font-family: 'Acumin Pro', sans-serif;
+      }
+      body[data-theme="dark"] .app-qr-hint { color: rgba(200,216,232,0.4); }
+      /* Helpers used in NOOD modal too */
+      .app-section-title {
+        font-size: 11px; font-weight: 700; letter-spacing: .08em;
+        text-transform: uppercase; color: rgba(0,59,97,0.45); margin: 4px 0 0;
+      }
+      body[data-theme="dark"] .app-section-title { color: rgba(200,216,232,0.35); }
+      .app-direct-link {
+        display: block; font-size: 13px; font-weight: 600; text-align: center;
+        color: var(--knrm-blue); text-decoration: underline; text-underline-offset: 3px;
+      }
+      .app-direct-link:hover { opacity: .75; }
+      body[data-theme="dark"] .app-direct-link { color: #7ab8d8; }
 
       .modal {
         position: absolute;
@@ -1254,7 +1344,7 @@
       .panel {
         position: absolute;
         top: 50%;
-        right: 18px;
+        right: clamp(18px, calc(18px + (100vw - 1280px) / 7), 180px);
         left: auto;
         transform: translateY(-50%);
         width: 400px;
@@ -1573,6 +1663,12 @@
           <svg class="menu-item-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
         </button>
         <div class="menu-divider"></div>
+        <button class="menu-item" id="menuAppBtn" type="button">
+          <span class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17 1.01 7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"/></svg></span>
+          <span class="menu-item-label">Download app</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+        </button>
+        <div class="menu-divider"></div>
         <button class="menu-item" id="menuThemeBtn" type="button">
           <span class="menu-item-icon" id="menuThemeIcon"></span>
           <span class="menu-item-label">Donkere modus</span>
@@ -1600,17 +1696,35 @@
               </a>
               <a class="cta cta-ghost full" href="https://www.knrm.nl/helpt-app" target="_blank" rel="noreferrer">KNRM Helpt app</a>
             </div>
-            <details class="dd" open>
+            <details class="dd">
               <summary>Wanneer bel je wie</summary>
               <div class="dd-body">Bel 112 bij direct levensgevaar. Heb je pech of een noodsituatie op het water, gebruik dan de KNRM Helpt app of neem contact op met de Kustwacht.</div>
             </details>
             <details class="dd">
-              <summary>KNRM Helpt app</summary>
-              <div class="dd-body">Met de rode knop NOODGEVAL deel je direct je positie en gegevens met de hulpdiensten.</div>
-            </details>
-            <details class="dd">
               <summary>Wat geef je door</summary>
               <div class="dd-body">Vertel wie je bent, wat er aan de hand is, waar je bent en met hoeveel personen je bent. Blijf bereikbaar en blijf bij het vaartuig als dat veilig kan.</div>
+            </details>
+            <details class="dd">
+              <summary>KNRM Helpt app</summary>
+              <div class="dd-body">
+                <p style="margin:0 0 14px">De KNRM Helpt app helpt je veilig op het water — met actuele info, vaarplannen en directe noodhulp. Met de rode knop NOODGEVAL deel je direct je positie en gegevens met de hulpdiensten.</p>
+                <p class="app-section-title">Download de app</p>
+                <div class="app-stores" style="margin-bottom:10px">
+                  <a class="app-store-btn" href="https://itunes.apple.com/nl/app/knrm-helpt/id940642344" target="_blank" rel="noreferrer">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    App Store
+                  </a>
+                  <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=safetrx.knrm" target="_blank" rel="noreferrer">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="m3 20.5v-17c0-.83 1-.08 1-.08l10.5 8.58-10.5 8.58s-1 .75-1-.08zm2.15-1.5 7.85-6.42-7.85-6.42v12.84zm10.35-5.08 2 1.63-11 6.35 9-7.98zm0-3.84-9-7.98 11 6.35-2 1.63z"/></svg>
+                    Google Play
+                  </a>
+                </div>
+                <a class="app-direct-link" href="https://www.knrm.nl/helpt" target="_blank" rel="noreferrer">knrm.nl/helpt ↗</a>
+                <div class="app-qr-wrap" style="margin-top:14px">
+                  <img class="app-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=4&data=https%3A%2F%2Fwww.knrm.nl%2Fhelpt" alt="QR-code KNRM Helpt app" width="110" height="110">
+                  <p class="app-qr-hint">Of scan met je telefoon</p>
+                </div>
+              </div>
             </details>
           </div>
         </div>
@@ -1634,36 +1748,70 @@
           </a>
           <div class="overlay-body">
             <div class="agenda-event">
-              <div class="agenda-event-info">
-                <div class="agenda-event-date">zo 3 mei 2026</div>
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/e3/2.FlyingFocus_11-.8-2025_original-e3821d86.jpeg" alt="Vlootschouw Den Helder">
+              </div>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">zo 3 mei 2026 · Den Helder</div>
                 <div class="agenda-event-name">Vlootschouw Den Helder</div>
-                <div class="agenda-event-sub">10:00–16:00 · Den Helder</div>
+                <div class="agenda-event-sub">10:00–16:00</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
               </div>
-              <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Meer info</a>
             </div>
             <div class="agenda-event">
-              <div class="agenda-event-info">
-                <div class="agenda-event-date">za 16 mei 2026</div>
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/20/foto_poster_reddingbootdag_KNRM_Enkhuizen_2020._foto_Roel_Ovinge_original-20c9cb0a.jpeg" alt="Reddingbootdag 2026">
+              </div>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">za 16 mei 2026 · Heel Nederland</div>
                 <div class="agenda-event-name">Reddingbootdag 2026</div>
-                <div class="agenda-event-sub">Diverse locaties · Heel Nederland</div>
+                <div class="agenda-event-sub">Diverse locaties</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
               </div>
-              <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Meer info</a>
             </div>
             <div class="agenda-event">
-              <div class="agenda-event-info">
-                <div class="agenda-event-date">zo 7 jun 2026</div>
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/6e/WhatsApp_Image_2025-07-26_at_23.00.33_original-6ee02e2b.jpeg" alt="KNRM Veilig Varen evenement">
+              </div>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">zo 7 jun 2026 · Loosdrechtse Plassen</div>
                 <div class="agenda-event-name">KNRM Veilig Varen evenement</div>
-                <div class="agenda-event-sub">11:00–15:00 · Loosdrechtse Plassen</div>
+                <div class="agenda-event-sub">11:00–15:00</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
               </div>
-              <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Meer info</a>
             </div>
             <div class="agenda-event">
-              <div class="agenda-event-info">
-                <div class="agenda-event-date">za 4 jul 2026</div>
-                <div class="agenda-event-name">Watersportbeurs Utrecht</div>
-                <div class="agenda-event-sub">09:00–17:00 · Jaarbeurs Utrecht</div>
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/ab/foto-arie-van-dijk-img_0567-pl6kx1jlavq7dzvvwx8ag7fckzx44rkan2bk116ab4_original-abcf49c6.jpeg" alt="SAR Katwijk 2026">
               </div>
-              <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Meer info</a>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">za 4 jul 2026 · Katwijk</div>
+                <div class="agenda-event-name">SAR Katwijk 2026</div>
+                <div class="agenda-event-sub">09:00–17:00</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
+              </div>
+            </div>
+            <div class="agenda-event">
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/3f/wereldhavendagen_original-3f5aab84.jpeg" alt="Wereldhavendagen Rotterdam 2026">
+              </div>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">vr 4 sep 2026 · Rotterdam</div>
+                <div class="agenda-event-name">Wereldhavendagen Rotterdam</div>
+                <div class="agenda-event-sub">Diverse tijden</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
+              </div>
+            </div>
+            <div class="agenda-event">
+              <div class="agenda-event-img">
+                <img src="https://www.knrm.nl/templates/yootheme/cache/03/hiswa-te-water-2024_original-03643e25.jpeg" alt="HISWA te Water 2026">
+              </div>
+              <div class="agenda-event-body">
+                <div class="agenda-event-date">wo 2 sep 2026 · Almere</div>
+                <div class="agenda-event-name">HISWA te Water 2026</div>
+                <div class="agenda-event-sub">10:00–17:00</div>
+                <a class="agenda-event-link" href="https://www.knrm.nl" target="_blank" rel="noreferrer">Lees meer</a>
+              </div>
             </div>
           </div>
         </div>
@@ -1681,6 +1829,39 @@
             <p class="filter-hint">Toon alleen hotspots van dit type:</p>
             <div class="filter-options" id="filterOptions"></div>
             <button class="filter-reset" id="filterReset" type="button">Wis filter — toon alles</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- App download modal -->
+      <div class="overlay-modal" id="appModal" role="dialog" aria-hidden="true">
+        <div class="overlay-backdrop" id="appBackdrop"></div>
+        <div class="overlay-card app-card">
+          <div class="overlay-top">
+            <div class="overlay-title">Download app</div>
+            <button class="modal-close" id="appClose" type="button" aria-label="Sluiten">×</button>
+          </div>
+          <div class="overlay-body app-body">
+            <p class="app-tagline">De <strong>KNRM Helpt</strong> app helpt je om goed voorbereid het water op te gaan. Check het weer, maak een vaarplan en deel je positie met dierbaren. Bij nood stuur je met één druk op de knop een noodsignaal met je exacte locatie naar de hulpdiensten.</p>
+            <a class="app-download-banner" href="https://www.knrm.nl/helpt" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path fill="currentColor" d="M5 20h14v-2H5v2zm7-18v10.59l-3.3-3.3-1.41 1.42L12 16l4.71-4.29-1.41-1.42L13 13.59V2h-1z"/></svg>
+              Download nu — gratis
+            </a>
+            <div class="app-stores">
+              <a class="app-store-btn" href="https://itunes.apple.com/nl/app/knrm-helpt/id940642344" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                App Store
+              </a>
+              <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=safetrx.knrm" target="_blank" rel="noreferrer">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="m3 20.5v-17c0-.83 1-.08 1-.08l10.5 8.58-10.5 8.58s-1 .75-1-.08zm2.15-1.5 7.85-6.42-7.85-6.42v12.84zm10.35-5.08 2 1.63-11 6.35 9-7.98zm0-3.84-9-7.98 11 6.35-2 1.63z"/></svg>
+                Google Play
+              </a>
+            </div>
+            <div class="app-qr-divider">of scan</div>
+            <div class="app-qr-wrap">
+              <img class="app-qr" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=4&data=https%3A%2F%2Fwww.knrm.nl%2Fhelpt" alt="QR-code KNRM Helpt app" width="120" height="120">
+              <p class="app-qr-hint">Met je telefoon</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1816,7 +1997,7 @@
           lat: 52.8,
           lon: 5.4,
           link: "https://www.knrm.nl/blog/tips/hotspotkaart",
-          video: PLACEHOLDER_VIDEO
+          video: "https://youtu.be/6BexpFZoIqI"
         },
         {
           id: "zuidwest",
@@ -1829,7 +2010,7 @@
           lat: 51.6,
           lon: 3.8,
           link: "https://www.knrm.nl/blog/tips/hotspotkaart",
-          video: PLACEHOLDER_VIDEO
+          video: "https://youtu.be/R_gbY7bQ5fo"
         },
         {
           id: "randmeren",
@@ -1855,7 +2036,7 @@
           lat: 51.73,
           lon: 4.8,
           link: "https://www.knrm.nl/blog/tips/hotspotkaart",
-          video: PLACEHOLDER_VIDEO
+          video: "https://youtu.be/zy0wxvotSLE"
         }
       ];
 
@@ -1884,6 +2065,10 @@
         filterClose: document.getElementById("filterClose"),
         filterOptions: document.getElementById("filterOptions"),
         filterReset: document.getElementById("filterReset"),
+        appModal: document.getElementById("appModal"),
+        appBackdrop: document.getElementById("appBackdrop"),
+        appClose: document.getElementById("appClose"),
+        menuAppBtn: document.getElementById("menuAppBtn"),
         alarmBtn: document.getElementById("alarmBtn"),
         alarmModal: document.getElementById("alarmModal"),
         alarmBackdrop: document.getElementById("alarmBackdrop"),
@@ -1955,7 +2140,7 @@
             if (!id && u.pathname.startsWith("/embed/")) id = u.pathname.split("/embed/")[1]?.split("/")[0] || "";
           }
           if (!id && u.hostname.includes("youtu.be")) id = u.pathname.replace("/", "").split("/")[0] || "";
-          return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1` : "";
+          return id ? `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&enablejsapi=1` : "";
         } catch {
           return "";
         }
@@ -2332,7 +2517,16 @@
       function openPanel() { document.body.classList.add("panel-open"); }
       function closePanel() { document.body.classList.remove("panel-open"); }
 
+      function pauseYouTube() {
+        try {
+          els.hsVideo.contentWindow.postMessage(
+            '{"event":"command","func":"pauseVideo","args":""}', '*'
+          );
+        } catch {}
+      }
+
       function clearVideoUI() {
+        pauseYouTube();
         els.videoFrameWrap.style.display = "none";
         try { els.hsVideoFile.pause(); } catch {}
         els.hsVideoFile.removeAttribute("src");
@@ -2526,8 +2720,10 @@
 
         // Menu: Agenda
         const openAgenda = () => {
+          pauseYouTube();
           closeMenu();
           closeFilter();
+          closeApp();
           els.agendaModal.classList.add("is-open");
           els.agendaModal.setAttribute("aria-hidden", "false");
         };
@@ -2541,8 +2737,10 @@
 
         // Menu: Filter
         const openFilter = () => {
+          pauseYouTube();
           closeMenu();
           closeAgenda();
+          closeApp();
           buildFilterOptions();
           els.filterModal.classList.add("is-open");
           els.filterModal.setAttribute("aria-hidden", "false");
@@ -2561,7 +2759,27 @@
           applyFilter();
         });
 
+        // Menu: App download
+        const openApp = () => {
+          pauseYouTube();
+          closeMenu();
+          closeFilter();
+          closeAgenda();
+          els.appModal.classList.add("is-open");
+          els.appModal.setAttribute("aria-hidden", "false");
+        };
+        const closeApp = () => {
+          els.appModal.classList.remove("is-open");
+          els.appModal.setAttribute("aria-hidden", "true");
+          if (els.appModal.contains(document.activeElement)) els.menuBtn.focus();
+        };
+        els.menuAppBtn.addEventListener("click", openApp);
+        els.appBackdrop.addEventListener("click", closeApp);
+        els.appClose.addEventListener("click", closeApp);
+
+        // Zorg dat andere menu's ook de app modal sluiten
         els.alarmBtn.addEventListener("click", () => {
+          closeApp();
           document.body.classList.add("alarm-open");
           els.alarmModal.setAttribute("aria-hidden", "false");
         });
